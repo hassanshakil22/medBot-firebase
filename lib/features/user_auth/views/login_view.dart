@@ -40,12 +40,10 @@ class _LoginViewState extends State<LoginView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Login Page",
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(
-                height: 5,
+              Image(
+                image: AssetImage("assets/medbot.png"),
+                height: 100,
+                width: 150,
               ),
               CustomFormField(
                 controller: _emailController,
@@ -119,8 +117,6 @@ class _LoginViewState extends State<LoginView> {
     String email = _emailController.text;
 
     User? user = await _auth.signInWithEmailAndPassword(email, password);
-    print("${user?.email ?? "no user"}");
-    print("${user?.displayName ?? "no user"}");
     if (user != null) {
       showToast(message: "user successfully signed in ! ");
       Navigator.push(

@@ -5,6 +5,7 @@ import 'package:firebase_authProject/features/user_auth/widgets/custom_button.da
 import 'package:firebase_authProject/global/widgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({
@@ -19,6 +20,10 @@ class _HomeViewState extends State<HomeView> {
   final TextEditingController _controller = TextEditingController();
   final List<Map<String, String>> messages = [];
   final ScrollController _scrollController = ScrollController();
+
+  String preprocessResponse(String response) {
+    return response.replaceAll('\n', '\n\n'); // Adjust line breaks if needed
+  }
 
   Future<void> sendMessage(String text) async {
     if (text.isEmpty) return;
@@ -63,7 +68,8 @@ class _HomeViewState extends State<HomeView> {
           messages.removeLast();
           messages.add({
             'user': 'Bot',
-            'text': result["candidates"][0]['content']["parts"][0]["text"]
+            'text': preprocessResponse(
+                result["candidates"][0]['content']["parts"][0]["text"])
           });
           scrollbehaviour();
         });
@@ -86,32 +92,36 @@ class _HomeViewState extends State<HomeView> {
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 14.0),
-        constraints:
-            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-        decoration: BoxDecoration(
-          gradient: isUser
-              ? LinearGradient(
-                  colors: [Colors.blue[100]!, Colors.purple[100]!],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                )
-              : LinearGradient(
-                  colors: [
-                    Colors.grey[200]!,
-                    Colors.grey[400]!,
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(color: isUser ? Colors.black : Colors.black87),
-        ),
-      ),
+          margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 14.0),
+          constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.75),
+          decoration: BoxDecoration(
+            gradient: isUser
+                ? LinearGradient(
+                    colors: [Colors.blue[100]!, Colors.purple[100]!],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : LinearGradient(
+                    colors: [
+                      Colors.grey[200]!,
+                      Colors.grey[400]!,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: MarkdownBody(
+            data: text,
+            styleSheet: MarkdownStyleSheet(
+              p: TextStyle(
+                color: isUser ? Colors.black : Colors.black87,
+                fontSize: 14.0,
+              ),
+            ),
+          )),
     );
   }
 

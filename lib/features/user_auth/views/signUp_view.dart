@@ -17,6 +17,7 @@ class SignUpView extends StatefulWidget {
 
 class _SignUpViewState extends State<SignUpView> {
   bool _isloading = false;
+  bool _isGoolgleloading = false;
   FirebaseAuthServices _auth = FirebaseAuthServices();
 
   TextEditingController _usernameController = TextEditingController();
@@ -41,115 +42,115 @@ class _SignUpViewState extends State<SignUpView> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(18.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Sign Up Page",
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              CustomFormField(
-                controller: _usernameController,
-                hintText: "Username",
-                isPasswordField: false,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              CustomFormField(
-                controller: _emailController,
-                hintText: "Email",
-                isPasswordField: false,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              CustomFormField(
-                controller: _passwordController,
-                hintText: "Password",
-                isPasswordField: true,
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              GestureDetector(
-                onTap: _signUp,
-                child: _isloading
-                    ? const CircularProgressIndicator(
-                        color: Colors.blue,
-                      )
-                    : Container(
-                        height: 40,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.blue),
-                        child: const Center(
-                            child: Text(
-                          "Sign up",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ))),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              GestureDetector(
-                onTap: _signInWithGoogle,
-                child: _isloading
-                    ? const CircularProgressIndicator(
-                        color: Colors.blue,
-                      )
-                    : Container(
-                        height: 40,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.red),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.google,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image(
+                  image: AssetImage("assets/medbot.png"),
+                  height: 100,
+                  width: 150,
+                ),
+                CustomFormField(
+                  controller: _usernameController,
+                  hintText: "Username",
+                  isPasswordField: false,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                CustomFormField(
+                  controller: _emailController,
+                  hintText: "Email",
+                  isPasswordField: false,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                CustomFormField(
+                  controller: _passwordController,
+                  hintText: "Password",
+                  isPasswordField: true,
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                GestureDetector(
+                  onTap: _signUp,
+                  child: _isloading
+                      ? const CircularProgressIndicator(
+                          color: Colors.blue,
+                        )
+                      : Container(
+                          height: 40,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.blue),
+                          child: const Center(
+                              child: Text(
+                            "Sign up",
+                            style: TextStyle(
                               color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "Sign in with google",
-                              style: TextStyle(
+                          ))),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                GestureDetector(
+                  onTap: _signInWithGoogle,
+                  child: _isGoolgleloading
+                      ? const CircularProgressIndicator(
+                          color: Colors.blue,
+                        )
+                      : Container(
+                          height: 40,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.red),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.google,
                                 color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
                               ),
-                            ),
-                          ],
-                        )),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Already have an account ? "),
-                  GestureDetector(
-                    onTap: () => Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginView()),
-                        (route) => false),
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  )
-                ],
-              ),
-            ],
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "Sign in with google",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          )),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Already have an account ? "),
+                    GestureDetector(
+                      onTap: () => Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginView()),
+                          (route) => false),
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -180,7 +181,7 @@ class _SignUpViewState extends State<SignUpView> {
 
   _signInWithGoogle() async {
     setState(() {
-      _isloading = true;
+      _isGoolgleloading = true;
     });
     final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -204,7 +205,7 @@ class _SignUpViewState extends State<SignUpView> {
       showToast(message: "Error occured : $e");
     }
     setState(() {
-      _isloading = false;
+      _isGoolgleloading = false;
     });
   }
 }

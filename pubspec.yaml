@@ -42,6 +42,7 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   google_sign_in: ^6.2.2
   http: ^1.2.2
+  flutter_markdown: ^0.7.4+3
 
 dev_dependencies:
   flutter_test:
